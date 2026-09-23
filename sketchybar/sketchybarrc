@@ -1,0 +1,109 @@
+#!/bin/bash
+# Omarchy(Waybar) 스타일 SketchyBar — Tokyo Night
+# https://github.com/yeo1220/omarchy-mac
+
+CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+# ── 설정 ────────────────────────────────────────────────────────────────
+# 워크스페이스를 모니터별로 나눠 표시할 기준 (모니터가 2대 이상일 때만 적용)
+#   1~SPLIT은 메인 모니터(display 1), 그 뒤는 보조 모니터(display 2)에 표시
+SPLIT=5
+# AI 구독 사용량으로 표시할 서비스 (CodexBar 필요, 비우면 표시 안 함)
+#   왼쪽부터 이 순서대로 나옵니다: claude codex cursor
+AI_PROVIDERS="claude codex cursor"
+AI_REFRESH=300   # 사용량 갱신 주기(초)
+
+# Tokyo Night 색상
+BG=0xf01a1b26
+FG=0xffc0caf5
+ACCENT=0xff7aa2f7
+DIM=0xff565f89
+# ────────────────────────────────────────────────────────────────────────
+
+sketchybar --bar position=top height=32 color=$BG shadow=off sticky=on \
+                 padding_left=10 padding_right=10 display=all topmost=window
+
+sketchybar --default icon.font="CaskaydiaMono Nerd Font:Bold:14.0" \
+                     label.font="CaskaydiaMono Nerd Font:Regular:13.0" \
+                     icon.color=$FG label.color=$FG \
+                     padding_left=4 padding_right=4 \
+                     icon.padding_left=4 icon.padding_right=4 \
+                     label.padding_left=4 label.padding_right=4
+
+# 왼쪽: AeroSpace 워크스페이스 1~9
+MONITORS=$(aerospace list-monitors 2>/dev/null | wc -l | tr -d ' ')
+sketchybar --add event aerospace_workspace_change
+for sid in 1 2 3 4 5 6 7 8 9; do
+  DISPLAY_ID=1
+  [ "${MONITORS:-1}" -ge 2 ] && [ "$sid" -gt "$SPLIT" ] && DISPLAY_ID=2
+  sketchybar --add item space.$sid left \
+    --set space.$sid icon="$sid" label.drawing=off display=$DISPLAY_ID drawing=off \
+          icon.padding_left=8 icon.padding_right=8 \
+          background.corner_radius=5 background.height=22 background.drawing=off \
+          click_script="aerospace workspace $sid"
+done
+
+# 표시 갱신은 숨은 항목 하나가 모아서 처리 (워크스페이스 전환·앱 전환 때, 그리고 10초마다)
+sketchybar --add item spaces_ctl left \
+           --set spaces_ctl drawing=off updates=on update_freq=10 script="$PLUGIN_DIR/aerospace.sh" \
+           --subscribe spaces_ctl aerospace_workspace_change front_app_switched display_change system_woke
+
+sketchybar --add item front_app left \
+           --set front_app icon.drawing=off label.color=$DIM script="$PLUGIN_DIR/front_app.sh" \
+           --subscribe front_app front_app_switched
+
+# 가운데: 시계 (Omarchy처럼)
+sketchybar --add item clock center \
+           --set clock update_freq=10 icon.drawing=off script="$PLUGIN_DIR/clock.sh"
+
+# 오른쪽: 배터리 · 볼륨 · CPU · Wi-Fi
+sketchybar --add item battery right \
+           --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
+           --subscribe battery system_woke power_source_change \
+           --add item volume right \
+           --set volume script="$PLUGIN_DIR/volume.sh" \
+           --subscribe volume volume_change \
+           --add item cpu right \
+           --set cpu update_freq=5 icon="󰍛" script="$PLUGIN_DIR/cpu.sh" \
+           --add item wifi right \
+           --set wifi update_freq=30 script="$PLUGIN_DIR/wifi.sh" \
+           --subscribe wifi wifi_change
+
+# 오른쪽 끝(Wi-Fi 왼쪽): AI 구독 사용량 — 사용률 + 초기화까지 남은 시간
+# 숨은 항목 ai_ctl이 주기적으로 CodexBar CLI로 한꺼번에 갱신
+# 클릭하면 팝업(플랜 · 세부 한도)을 열고 즉시 갱신, 마우스가 벗어나면 닫힘
+if [ -n "$AI_PROVIDERS" ] && command -v codexbar >/dev/null 2>&1; then
+  sketchybar --add event ai_usage_refresh
+  # right 영역은 먼저 추가한 항목이 바깥쪽에 놓이므로 역순으로 추가
+  for p in $(echo $AI_PROVIDERS | tr ' ' '\n' | tail -r); do
+    case $p in claude) N="Claude";; codex) N="Codex";; cursor) N="Cursor";; *) N="$p";; esac
+    sketchybar --add item ai.$p right \
+               --set ai.$p icon="$N" icon.color=$DIM icon.font="CaskaydiaMono Nerd Font:Bold:12.0" \
+                     icon.padding_right=2 label.padding_left=2 label="…" \
+                     script="$PLUGIN_DIR/ai_popup.sh" \
+                     popup.align=right popup.height=22 \
+                     popup.background.color=$BG popup.background.corner_radius=6 \
+                     popup.background.border_width=1 popup.background.border_color=$DIM \
+               --subscribe ai.$p mouse.clicked mouse.exited.global
+    # 팝업 행: 0번은 플랜 이름, 1~6번은 세부 한도 (쓰지 않는 행은 숨김)
+    for i in 0 1 2 3 4 5 6; do
+      sketchybar --add item ai.$p.r$i popup.ai.$p \
+                 --set ai.$p.r$i drawing=off icon.width=96 icon.color=$DIM \
+                       icon.font="CaskaydiaMono Nerd Font:Regular:12.0" \
+                       label.font="CaskaydiaMono Nerd Font:Regular:12.0" \
+                       padding_left=6 padding_right=10
+    done
+  done
+  sketchybar --add item ai_ctl right \
+             --set ai_ctl drawing=off updates=on update_freq=$AI_REFRESH script="$PLUGIN_DIR/ai_usage.sh" \
+             --subscribe ai_ctl ai_usage_refresh system_woke
+fi
+
+sketchybar --update
+
+# 마우스가 화면 맨 위에 잠시 머물면 SketchyBar를 숨기고 macOS 메뉴바를 보여줌
+pkill -f "$CONFIG_DIR/helpers/menubar_swap" 2>/dev/null
+[ -x "$CONFIG_DIR/helpers/menubar_swap" ] && \
+  nohup "$CONFIG_DIR/helpers/menubar_swap" >/dev/null 2>&1 &

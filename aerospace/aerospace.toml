@@ -1,0 +1,128 @@
+# Omarchy 스타일 AeroSpace 설정 — Omarchy의 Super 키 = ⌘
+# https://github.com/yeo1220/omarchy-mac
+config-version = 2
+
+start-at-login = true
+
+after-startup-command = [
+  'exec-and-forget sketchybar',
+  'exec-and-forget borders active_color=0xff7aa2f7 inactive_color=0x00000000 width=4.0 style=round hidpi=on',
+]
+
+# 워크스페이스가 바뀌면 SketchyBar에 알림
+exec-on-workspace-change = ['/bin/bash', '-c',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+]
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+accordion-padding = 30
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+automatically-unhide-macos-hidden-apps = true
+
+# 모니터 재연결 등으로 10 같은 임시 워크스페이스가 생기지 않도록 1~9를 항상 유지
+persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+# sketchybar · borders를 찾을 수 있도록 Homebrew 경로를 PATH에 추가
+[exec]
+inherit-env-vars = true
+[exec.env-vars]
+PATH = '/opt/homebrew/bin:/usr/local/bin:${HOME}/.local/bin:${PATH}'
+
+[key-mapping]
+preset = 'qwerty'
+
+[gaps]
+inner.horizontal = 10
+inner.vertical = 10
+outer.left = 10
+outer.right = 10
+outer.bottom = 10
+outer.top = 44   # SketchyBar(32px) + 여백
+
+[mode.main.binding]
+# Omarchy의 Super = ⌘. 앱 단축키(⌘W/T/F/L 등)와 겹치는 동작은 ⌘⇧로 옮김
+cmd-enter = 'exec-and-forget open -na Ghostty'
+cmd-shift-b = 'exec-and-forget open -na "Google Chrome"'
+
+# 창 조작
+cmd-shift-w = 'close'
+cmd-shift-f = 'fullscreen'
+cmd-shift-t = 'layout floating tiling'
+cmd-shift-j = 'layout tiles horizontal vertical'
+cmd-shift-a = 'layout accordion horizontal vertical'
+
+# 포커스 / 이동: ⌥ + h/j/k/l (⌘+화살표는 텍스트 편집용으로 macOS에 돌려줌)
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# 크기 조절
+cmd-shift-minus = 'resize smart -50'
+cmd-shift-equal = 'resize smart +50'
+
+# 워크스페이스: ⌥ + 숫자, 창 보내기: ⌥⇧ + 숫자 (⌘+숫자는 브라우저 탭 전환용으로 macOS에 돌려줌)
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+alt-shift-1 = ['move-node-to-workspace 1', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-2 = ['move-node-to-workspace 2', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-3 = ['move-node-to-workspace 3', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-4 = ['move-node-to-workspace 4', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-5 = ['move-node-to-workspace 5', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-6 = ['move-node-to-workspace 6', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-7 = ['move-node-to-workspace 7', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-8 = ['move-node-to-workspace 8', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-shift-9 = ['move-node-to-workspace 9', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+alt-tab = 'workspace-back-and-forth'
+
+# 모니터 간 이동: ⌥, = 다른 모니터로 포커스, ⌥⇧, = 창을 다른 모니터로 보내고 따라가기
+alt-comma = 'focus-monitor --wrap-around next'
+alt-shift-comma = ['move-node-to-monitor --wrap-around --focus-follows-window next', 'exec-and-forget sketchybar --trigger aerospace_workspace_change']
+
+# 서비스 모드: ⌘⇧; 누른 뒤 r(레이아웃 초기화) / f(플로팅 토글) / esc(설정 리로드)
+cmd-shift-semicolon = 'mode service'
+
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main']
+f = ['layout floating tiling', 'mode main']
+backspace = ['close-all-windows-but-current', 'mode main']
+
+# 모니터 배치: 1~5는 메인 모니터, 6~9는 보조 모니터 (모니터가 1대면 모두 메인에 표시됨)
+[workspace-to-monitor-force-assignment]
+1 = 'main'
+2 = 'main'
+3 = 'main'
+4 = 'main'
+5 = 'main'
+6 = 'secondary'
+7 = 'secondary'
+8 = 'secondary'
+9 = 'secondary'
+
+# 타일링하면 어색한 앱은 플로팅
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = 'layout floating'
