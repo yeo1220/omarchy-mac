@@ -51,6 +51,14 @@ Menu bar swap timing lives in `sketchybar/helpers/menubar_swap.swift` (`dwell`, 
 `restoreBelow`); rebuild with `swiftc -O` afterwards. The clock and labels are in Korean — edit
 `plugins/clock.sh` and the titles in `plugins/ai_usage.sh` to localize.
 
+`⌘ Enter` runs `open -na Ghostty`, which starts a new Ghostty instance each time. Ghostty on macOS keeps
+running after its last window closes, so add `quit-after-last-window-closed = true` to
+`~/.config/ghostty/config` to stop empty instances from piling up in the Dock.
+
+If bar items show labels but no values, the plugins can't find `sketchybar`: make sure its location
+(`which sketchybar`) is in `[exec.env-vars]` `PATH` in `aerospace.toml`, then relaunch AeroSpace from
+Launchpad rather than a terminal.
+
 ## License
 
 MIT

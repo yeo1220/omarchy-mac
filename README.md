@@ -324,6 +324,31 @@ AeroSpace에 손쉬운 사용 권한이 없는 경우입니다. *시스템 설�
 AeroSpace를 껐다 켠 뒤 AeroSpace를 다시 실행하세요.
 </details>
 
+<details>
+<summary><b>창을 닫아도 Ghostty가 Dock에 계속 쌓여요</b></summary>
+
+`⌘ Enter`는 `open -na Ghostty`로 매번 새 Ghostty 인스턴스를 띄웁니다. 그런데 macOS의 Ghostty는 기본적으로
+마지막 창을 닫아도 종료되지 않아서 빈 인스턴스가 남습니다. `~/.config/ghostty/config`에 다음 줄을 추가하세요.
+
+```
+quit-after-last-window-closed = true
+```
+
+이미 쌓인 인스턴스는 Dock에서 종료하거나 `pkill -x ghostty`로 정리합니다(열린 터미널도 모두 닫힙니다).
+</details>
+
+<details>
+<summary><b>바에 항목 이름만 있고 값이 비어 있어요</b></summary>
+
+플러그인이 `sketchybar` 명령을 찾지 못하는 경우입니다. 터미널에서 AeroSpace를 띄웠을 때는 셸의 PATH를
+물려받아 잘 되다가, Launchpad나 로그인 시 자동 실행에서만 비어 보이기도 합니다. `aerospace.toml`의
+`[exec.env-vars]` `PATH`에 `sketchybar`가 설치된 경로(`which sketchybar`)가 들어 있는지 확인하고,
+AeroSpace를 종료한 뒤 Launchpad에서 다시 실행하세요.
+
+같은 이유로 AeroSpace는 터미널보다 Launchpad·Spotlight에서 실행하는 편이 좋습니다. 터미널에서 띄우면
+그 셸의 환경 변수가 AeroSpace로 여는 모든 앱에 그대로 전달됩니다.
+</details>
+
 ## 제거
 
 ```bash
