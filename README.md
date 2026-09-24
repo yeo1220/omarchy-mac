@@ -118,6 +118,7 @@ cd ~/omarchy-mac
 숫자를 클릭하면 그 워크스페이스로 이동합니다. 숫자 옆 흐린 글자는 지금 앞에 있는 앱 이름입니다.
 
 **가운데 — 시계**: `9월 23일 (화)  10:12`
+(13·14인치 노트북처럼 화면이 좁으면 오른쪽 항목과 겹치지 않도록 시계가 **오른쪽 끝**으로 갑니다. `CLOCK_POSITION` 참고)
 
 **오른쪽 — 시스템 상태**: Wi-Fi(유선이면 이더넷 아이콘), CPU 사용률, 볼륨, 배터리(충전 중이면 번개)
 
@@ -222,6 +223,8 @@ Omarchy의 Super 키 자리에 `⌘`와 `⌥`을 나눠 썼습니다. `⌘`+화�
 SPLIT=5                           # 모니터 2대일 때 1~5는 메인, 6~9는 보조 모니터에 표시
 AI_PROVIDERS="claude codex cursor" # 표시할 AI 서비스와 순서. 비우면 AI 항목을 표시하지 않음
 AI_REFRESH=300                    # AI 사용량 갱신 주기(초)
+CLOCK_POSITION=auto               # 시계 위치: center | right | auto
+CLOCK_CENTER_MIN=1800             # auto일 때 가장 좁은 화면 폭이 이 값(pt) 이상이면 가운데, 아니면 오른쪽 끝
 BG=0xf01a1b26                     # 색상 (0xAARRGGBB)
 ```
 
@@ -296,6 +299,14 @@ codexbar usage --provider claude
 
 로그인 안내가 나오면 CodexBar 앱 설정에서 해당 서비스를 켜고 로그인하세요. 정상으로 나오는데 바만 `?`라면
 `sketchybar --trigger ai_usage_refresh`로 즉시 갱신해 보세요.
+</details>
+
+<details>
+<summary><b>가운데 시계가 오른쪽 항목과 겹쳐요</b></summary>
+
+기본값(`CLOCK_POSITION=auto`)은 가장 좁은 화면 폭이 1800pt보다 작으면 시계를 오른쪽 끝에 둡니다.
+그래도 겹치면 `sketchybarrc`에서 `CLOCK_POSITION=right`로 고정하거나 `AI_PROVIDERS`를 줄이고
+`sketchybar --reload`를 실행하세요. 모니터를 연결·해제한 뒤에도 `--reload`로 위치를 다시 정합니다.
 </details>
 
 <details>

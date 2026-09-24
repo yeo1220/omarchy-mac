@@ -11,7 +11,7 @@ for Claude, Codex and Cursor.
 
 ## Features
 
-- **Tokyo Night SketchyBar** — workspaces, front app, centered clock, Wi-Fi, CPU, volume, battery
+- **Tokyo Night SketchyBar** — workspaces, front app, clock (centered, or right-aligned on narrow screens via `CLOCK_POSITION`), Wi-Fi, CPU, volume, battery
 - **AI subscription usage** — usage % and time until reset for Claude (5h / weekly), Codex (5h / weekly,
   `↺N` = rate-limit reset credits left) and Cursor (monthly / third-party models). Color-coded
   (green < 50%, yellow < 80%, red ≥ 80%). Click an item for a popup with the plan name and every sub-limit.

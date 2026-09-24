@@ -37,14 +37,15 @@ if [ "$BREW" = 1 ]; then
   command -v brew >/dev/null || { echo "Homebrew가 필요합니다: https://brew.sh"; exit 1; }
 
   need_formula() { command -v "$1" >/dev/null && ok "$1 이미 있음" || brew install "$2"; }
-  need_cask()    { brew list --cask "$1" >/dev/null 2>&1 && ok "$1 이미 있음" || brew install --cask "$1"; }
+  # 두 번째 인자는 tap 경로가 필요한 cask용 (예: aerospace는 nikitabobko/tap에 있음)
+  need_cask()    { brew list --cask "$1" >/dev/null 2>&1 && ok "$1 이미 있음" || brew install --cask "${2:-$1}"; }
 
   brew tap FelixKratz/formulae >/dev/null
   need_formula sketchybar FelixKratz/formulae/sketchybar
   need_formula borders    FelixKratz/formulae/borders
   need_formula jq         jq
   need_cask font-caskaydia-mono-nerd-font
-  [ "$AEROSPACE" = 1 ] && need_cask aerospace
+  [ "$AEROSPACE" = 1 ] && need_cask aerospace nikitabobko/tap/aerospace
   [ "$AI" = 1 ] && need_cask codexbar
 fi
 
