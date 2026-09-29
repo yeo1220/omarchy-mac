@@ -220,7 +220,7 @@ Omarchy의 Super 키 자리에 `⌘`와 `⌥`을 나눠 썼습니다. `⌘`+화�
 ### 바 설정 — `sketchybar/sketchybarrc` 맨 위
 
 ```bash
-SPLIT=5                           # 모니터 2대일 때 1~5는 메인, 6~9는 보조 모니터에 표시
+SPLIT=5                           # 시작 시 초기 배치(1~5 메인, 6~9 보조). 이후엔 AeroSpace 실제 배치를 따라감
 AI_PROVIDERS="claude codex cursor" # 표시할 AI 서비스와 순서. 비우면 AI 항목을 표시하지 않음
 AI_REFRESH=300                    # AI 사용량 갱신 주기(초)
 CLOCK_POSITION=auto               # 시계 위치: center | right | auto
@@ -323,9 +323,10 @@ sketchybar --reload
 <details>
 <summary><b>워크스페이스 숫자가 엉뚱한 모니터에 떠요</b></summary>
 
-`sketchybarrc`의 `SPLIT` 값과 `aerospace.toml`의 `[workspace-to-monitor-force-assignment]`가 같은
-기준인지 확인하세요. 기본값은 둘 다 1~5 메인, 6~9 보조입니다. 모니터를 새로 연결했다면
-`sketchybar --reload`로 모니터 수를 다시 감지합니다.
+바의 워크스페이스 숫자는 AeroSpace가 실제로 배치한 모니터를 따라 자동으로 옮겨집니다(모니터 연결·해제,
+잠자기 해제, 10초 주기마다 갱신). 배치 자체를 바꾸려면 `aerospace.toml`의
+`[workspace-to-monitor-force-assignment]`를 고치세요. 기본값은 1~5 메인, 6~9 보조이고, 보조 모니터가
+없으면(모니터 1대이거나 3대 이상) 6~9도 메인에 놓입니다. 바로 반영하려면 `sketchybar --reload`.
 </details>
 
 <details>
@@ -333,6 +334,15 @@ sketchybar --reload
 
 AeroSpace에 손쉬운 사용 권한이 없는 경우입니다. *시스템 설정 → 개인정보 보호 및 보안 → 손쉬운 사용*에서
 AeroSpace를 껐다 켠 뒤 AeroSpace를 다시 실행하세요.
+</details>
+
+<details>
+<summary><b>워크스페이스 표시가 멈추고 창 정렬·⌥ 단축키가 안 돼요</b></summary>
+
+AeroSpace가 종료된 경우입니다. `pgrep -l AeroSpace`로 확인하고, 없으면 `open -a AeroSpace`로 다시 실행하세요.
+`~/Library/Logs/DiagnosticReports/AeroSpace-*.ips`에 크래시 기록이 남습니다.
+이전 설정처럼 `[workspace-to-monitor-force-assignment]`에 `'secondary'`만 지정하면 모니터 절전·재연결 때
+AeroSpace가 크래시할 수 있으니 `['secondary', 'main']`처럼 폴백을 함께 적으세요(현재 기본값).
 </details>
 
 <details>

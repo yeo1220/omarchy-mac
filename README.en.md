@@ -18,7 +18,7 @@ for Claude, Codex and Cursor.
   Data comes from the [CodexBar](https://codexbar.app) CLI; no tokens or cookies are read by these scripts.
 - **Menu bar swap** — SketchyBar is shown normally; rest the cursor at the very top edge for ~0.6 s and it
   hides so you can use the macOS menu bar. Move down and it comes back.
-- **AeroSpace config** — workspaces 1–9 pinned, auto-split 1–5 / 6–9 across two monitors,
+- **AeroSpace config** — workspaces 1–9 pinned, auto-split 1–5 / 6–9 across two monitors (bar items follow AeroSpace's actual placement),
   `⌥ hjkl` focus, `⌥ 1–9` workspaces, `⌘ Enter` terminal. `⌘`+arrows and `⌘`+numbers are left to macOS.
 - **JankyBorders** focus border.
 
@@ -42,7 +42,7 @@ After installing, grant AeroSpace Accessibility permission and sign in to your p
 Top of `sketchybar/sketchybarrc`:
 
 ```bash
-SPLIT=5                            # workspaces 1..SPLIT on main display when 2+ monitors
+SPLIT=5                            # initial placement only; items then follow AeroSpace's monitor assignment
 AI_PROVIDERS="claude codex cursor" # any CodexBar provider id; empty = hide AI items
 AI_REFRESH=300                     # seconds
 ```
@@ -58,6 +58,15 @@ running after its last window closes, so add `quit-after-last-window-closed = tr
 If bar items show labels but no values, the plugins can't find `sketchybar`: make sure its location
 (`which sketchybar`) is in `[exec.env-vars]` `PATH` in `aerospace.toml`, then relaunch AeroSpace from
 Launchpad rather than a terminal.
+
+Workspace items move to whichever monitor AeroSpace actually puts them on (refreshed on display change,
+wake, and every 10 s). To change the layout, edit `[workspace-to-monitor-force-assignment]` in
+`aerospace.toml`. Without a secondary monitor (one monitor, or three or more) 6–9 land on the main one.
+
+If the workspace numbers freeze and tiling / `⌥` shortcuts stop working, AeroSpace has quit — check with
+`pgrep -l AeroSpace` and crash logs in `~/Library/Logs/DiagnosticReports/AeroSpace-*.ips`. Assigning
+`'secondary'` alone can crash AeroSpace when a monitor sleeps or reconnects; use a fallback like
+`['secondary', 'main']` (the default here).
 
 ## License
 
