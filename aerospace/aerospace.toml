@@ -102,17 +102,17 @@ r = ['flatten-workspace-tree', 'mode main']
 f = ['layout floating tiling', 'mode main']
 backspace = ['close-all-windows-but-current', 'mode main']
 
-# 모니터 배치: 1~5는 메인 모니터, 6~9는 보조 모니터 (모니터가 1대면 모두 메인에 표시됨)
+# 모니터 배치: 1~5는 메인 모니터, 6~9는 보조 모니터 (모니터가 1대로 줄면 'main'으로 폴백 — 'secondary' 단독 지정 시 모니터 절전·재연결 때 AeroSpace가 크래시)
 [workspace-to-monitor-force-assignment]
 1 = 'main'
 2 = 'main'
 3 = 'main'
 4 = 'main'
 5 = 'main'
-6 = 'secondary'
-7 = 'secondary'
-8 = 'secondary'
-9 = 'secondary'
+6 = ['secondary', 'main']
+7 = ['secondary', 'main']
+8 = ['secondary', 'main']
+9 = ['secondary', 'main']
 
 # 타일링하면 어색한 앱은 플로팅
 [[on-window-detected]]
