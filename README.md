@@ -45,7 +45,7 @@ Omarchy(DHH가 만든 Arch Linux + Hyprland 배포판)의 깔끔한 Waybar와 �
 | **SketchyBar 상단 바** | Tokyo Night 색상의 Omarchy(Waybar) 스타일 바. 워크스페이스, 현재 앱, 시계, Wi-Fi, CPU, 볼륨, 배터리 |
 | **AI 구독 사용량** | Claude · Codex · Cursor의 한도 사용률과 **초기화까지 남은 시간**. 클릭하면 플랜·세부 한도 팝업 |
 | **메뉴바 자동 전환** | 평소엔 SketchyBar, 마우스를 화면 맨 위에 잠시 대면 macOS 메뉴바로 전환 (작은 Swift 헬퍼) |
-| **AeroSpace 설정** | i3/Hyprland 같은 타일링. 워크스페이스 1~9 고정, 모니터 2대면 1~5 / 6~9로 자동 분배 |
+| **AeroSpace 설정** | i3/Hyprland 같은 타일링. 워크스페이스 1~9 고정, 모니터 2대면 1~5 / 6~9, 3대 이상이면 1~3 / 4~6 / 7~9로 자동 분배 |
 | **JankyBorders** | 포커스된 창에 파란 테두리 |
 | **설치·제거 스크립트** | 기존 설정 자동 백업, 한 줄 설치, 한 줄 되돌리기 |
 
@@ -326,7 +326,10 @@ sketchybar --reload
 바의 워크스페이스 숫자는 AeroSpace가 실제로 배치한 모니터를 따라 자동으로 옮겨집니다(모니터 연결·해제,
 잠자기 해제, 10초 주기마다 갱신). 배치 자체를 바꾸려면 `aerospace.toml`의
 `[workspace-to-monitor-force-assignment]`를 고치세요. 기본값은 1~5 메인, 6~9 보조이고, 보조 모니터가
-없으면(모니터 1대이거나 3대 이상) 6~9도 메인에 놓입니다. 바로 반영하려면 `sketchybar --reload`.
+없으면 6~9도 메인에 놓입니다. 모니터가 3대 이상이면 `plugins/monitor_layout.sh`가 이 블록을 왼쪽부터
+1~3 / 4~6 / 7~9 배치로 바꿔 쓰고, 2대 이하로 돌아오면 원래대로 되돌립니다(4번째 모니터부터는 워크스페이스
+번호가 없음). 이 블록은 모니터가 바뀔 때마다 다시 쓰이므로, 직접 고친 배치를 유지하려면 `sketchybarrc`에서
+`monitor_ctl` 항목을 지우세요. 바로 반영하려면 `sketchybar --reload`.
 </details>
 
 <details>

@@ -18,7 +18,7 @@ for Claude, Codex and Cursor.
   Data comes from the [CodexBar](https://codexbar.app) CLI; no tokens or cookies are read by these scripts.
 - **Menu bar swap** — SketchyBar is shown normally; rest the cursor at the very top edge for ~0.6 s and it
   hides so you can use the macOS menu bar. Move down and it comes back.
-- **AeroSpace config** — workspaces 1–9 pinned, auto-split 1–5 / 6–9 across two monitors (bar items follow AeroSpace's actual placement),
+- **AeroSpace config** — workspaces 1–9 pinned, auto-split 1–5 / 6–9 across two monitors or 1–3 / 4–6 / 7–9 across three or more (bar items follow AeroSpace's actual placement),
   `⌥ hjkl` focus, `⌥ 1–9` workspaces, `⌘ Enter` terminal. `⌘`+arrows and `⌘`+numbers are left to macOS.
 - **JankyBorders** focus border.
 
@@ -61,7 +61,10 @@ Launchpad rather than a terminal.
 
 Workspace items move to whichever monitor AeroSpace actually puts them on (refreshed on display change,
 wake, and every 10 s). To change the layout, edit `[workspace-to-monitor-force-assignment]` in
-`aerospace.toml`. Without a secondary monitor (one monitor, or three or more) 6–9 land on the main one.
+`aerospace.toml`. With a single monitor everything lands on it. With three or more monitors,
+`plugins/monitor_layout.sh` rewrites that block to 1–3 / 4–6 / 7–9 from left to right and restores it when
+you go back to two or fewer (a 4th+ monitor gets no numbered workspace). Because the block is rewritten on
+every display change, delete the `monitor_ctl` item in `sketchybarrc` if you want to keep a hand-edited layout.
 
 If the workspace numbers freeze and tiling / `⌥` shortcuts stop working, AeroSpace has quit — check with
 `pgrep -l AeroSpace` and crash logs in `~/Library/Logs/DiagnosticReports/AeroSpace-*.ips`. Assigning
