@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://omarchy-mac.wslaw.kr/sitemap.xml
