@@ -12,13 +12,15 @@ export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
 #   (시작 시 초기값일 뿐, 실제 표시 위치는 plugins/aerospace.sh가 AeroSpace 배치를 따라 갱신)
 SPLIT=5
 # AI 구독 사용량으로 표시할 서비스 (CodexBar 필요, 비우면 표시 안 함)
-#   왼쪽부터 이 순서대로 나옵니다: claude codex cursor
-AI_PROVIDERS="claude codex cursor"
+#   왼쪽부터 이 순서대로 나옵니다: claude codex cursor antigravity
+#   antigravity = Gemini 구독(Google AI Pro/Ultra) 사용량. Antigravity CLI(agy)로 로그인해 두면 조회됩니다
+#   gemini = Gemini CLI(~/.gemini/oauth_creds.json) 기준 일일 한도. 둘 중 쓰는 쪽을 넣으세요
+AI_PROVIDERS="claude codex cursor antigravity"
 AI_REFRESH=300   # 사용량 갱신 주기(초)
-# 시계 위치: center | right | auto
+# 시계 위치: right | center | auto
+#   right는 항상 오른쪽 끝 — AI 항목이 많아지면 가운데 시계와 글자가 겹치므로 기본값
 #   auto는 가장 좁은 화면 폭이 CLOCK_CENTER_MIN(pt) 이상이면 가운데, 아니면 오른쪽 끝
-#   (13·14인치 노트북처럼 좁은 화면에서는 가운데 시계가 오른쪽 항목과 겹치기 때문)
-CLOCK_POSITION=auto
+CLOCK_POSITION=right
 CLOCK_CENTER_MIN=1800
 
 # Tokyo Night 색상
@@ -66,7 +68,7 @@ sketchybar --add item front_app left \
            --set front_app icon.drawing=off label.color=$DIM script="$PLUGIN_DIR/front_app.sh" \
            --subscribe front_app front_app_switched
 
-# 시계: 넓은 화면은 가운데(Omarchy처럼), 좁은 화면은 오른쪽 끝
+# 시계: 기본은 오른쪽 끝. center/auto로 바꾸면 (넓은 화면에서) Omarchy처럼 가운데
 if [ "$CLOCK_POSITION" = auto ]; then
   MIN_WIDTH=$(osascript -l JavaScript -e \
     'ObjC.import("AppKit"); Math.min(...ObjC.unwrap($.NSScreen.screens).map(s => s.frame.size.width))' 2>/dev/null)
@@ -97,7 +99,7 @@ if [ -n "$AI_PROVIDERS" ] && command -v codexbar >/dev/null 2>&1; then
   sketchybar --add event ai_usage_refresh
   # right 영역은 먼저 추가한 항목이 바깥쪽에 놓이므로 역순으로 추가
   for p in $(echo $AI_PROVIDERS | tr ' ' '\n' | tail -r); do
-    case $p in claude) N="Claude";; codex) N="Codex";; cursor) N="Cursor";; *) N="$p";; esac
+    case $p in claude) N="Claude";; codex) N="Codex";; cursor) N="Cursor";; antigravity) N="Gemini";; gemini) N="Gemini CLI";; *) N="$p";; esac
     sketchybar --add item ai.$p right \
                --set ai.$p icon="$N" icon.color=$DIM icon.font="CaskaydiaMono Nerd Font:Bold:12.0" \
                      icon.padding_right=2 label.padding_left=2 label="…" \

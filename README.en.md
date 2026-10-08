@@ -11,9 +11,10 @@ for Claude, Codex and Cursor.
 
 ## Features
 
-- **Tokyo Night SketchyBar** — workspaces, front app, clock (centered, or right-aligned on narrow screens via `CLOCK_POSITION`), Wi-Fi, CPU, volume, battery
+- **Tokyo Night SketchyBar** — workspaces, front app, Wi-Fi, CPU, volume, battery, clock (right-aligned by default so it never overlaps the AI items; `CLOCK_POSITION=center|auto` puts it in the middle)
 - **AI subscription usage** — usage % and time until reset for Claude (5h / weekly), Codex (5h / weekly,
-  `↺N` = rate-limit reset credits left) and Cursor (monthly / third-party models). Color-coded
+  `↺N` = rate-limit reset credits left), Cursor (monthly / third-party models) and Gemini (5h / weekly quotas of
+  the Google AI subscription via Antigravity; needs a logged-in [Antigravity CLI](https://antigravity.google/product/antigravity-cli) `agy`). Color-coded
   (green < 50%, yellow < 80%, red ≥ 80%). Click an item for a popup with the plan name and every sub-limit.
   Data comes from the [CodexBar](https://codexbar.app) CLI; no tokens or cookies are read by these scripts.
 - **Menu bar swap** — SketchyBar is shown normally; rest the cursor at the very top edge for ~0.6 s and it
@@ -43,7 +44,7 @@ Top of `sketchybar/sketchybarrc`:
 
 ```bash
 SPLIT=5                            # initial placement only; items then follow AeroSpace's monitor assignment
-AI_PROVIDERS="claude codex cursor" # any CodexBar provider id; empty = hide AI items
+AI_PROVIDERS="claude codex cursor antigravity" # any CodexBar provider id; empty = hide AI items
 AI_REFRESH=300                     # seconds
 ```
 

@@ -124,8 +124,8 @@ $(printf '\033[1m설치 완료!\033[0m')
 다음 단계
   1. AeroSpace를 처음 실행했다면
      시스템 설정 → 개인정보 보호 및 보안 → 손쉬운 사용에서 AeroSpace를 허용하세요.
-  2. AI 사용량을 보려면 CodexBar 앱 설정에서 Claude · Codex · Cursor 계정을 연결하세요.
-     연결 전에는 바에 '?'가 표시됩니다.
+  2. AI 사용량을 보려면 CodexBar 앱 설정에서 Claude · Codex · Cursor · Antigravity(Gemini)를 연결하세요.
+     (Gemini는 Antigravity CLI 'agy'로 로그인해 두면 됩니다) 연결 전에는 바에 '?'가 표시됩니다.
   3. 단축키와 사용법은 README.md를 참고하세요.
 
 되돌리기: ./uninstall.sh (백업해 둔 설정을 복원합니다)

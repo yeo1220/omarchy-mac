@@ -5,16 +5,16 @@
 Omarchy(DHH가 만든 Arch Linux + Hyprland 배포판)의 깔끔한 Waybar와 키보드 중심 창 관리를 Mac에서
 비슷하게 쓸 수 있도록 [SketchyBar](https://github.com/FelixKratz/SketchyBar)와
 [AeroSpace](https://github.com/nikitabobko/AeroSpace) 설정을 묶었습니다. 여기에 요즘 개발자에게
-필요한 **AI 코딩 도구 구독 사용량(Claude · Codex · Cursor)** 표시를 더했습니다.
+필요한 **AI 코딩 도구 구독 사용량(Claude · Codex · Cursor · Gemini)** 표시를 더했습니다.
 
 [English README](README.en.md)
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ 1 2 3  Ghostty            9월 23일 (화)  10:12          Claude 17% 26m·40% 4d19h  Codex 99% 3d15h ↺1       │
-│                                                         Cursor 12%·3P 92% 10d5h  󰖩  󰍛 12%  󰕾 45%  󰂄 100% │
+│ 1 2 3  Ghostty                Claude 17% 26m·40% 4d19h  Codex 99% 3d15h ↺1  Cursor 12%·3P 92% 10d5h       │
+│                            Gemini 0% 4h·7% 6d10h 3P 0%  󰖩  󰍛 12%  󰕾 45%  󰂄 100%  9월 23일 (화)  10:12 │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-  워크스페이스 · 현재 앱           가운데 시계                AI 구독 사용량 · Wi-Fi · CPU · 볼륨 · 배터리
+  워크스페이스 · 현재 앱            AI 구독 사용량 · Wi-Fi · CPU · 볼륨 · 배터리 · 시계(오른쪽 끝)
 ```
 > 실제로는 한 줄로 표시됩니다. 위 그림은 폭 때문에 두 줄로 나눴습니다.
 
@@ -42,8 +42,8 @@ Omarchy(DHH가 만든 Arch Linux + Hyprland 배포판)의 깔끔한 Waybar와 �
 
 | 구성 | 설명 |
 |---|---|
-| **SketchyBar 상단 바** | Tokyo Night 색상의 Omarchy(Waybar) 스타일 바. 워크스페이스, 현재 앱, 시계, Wi-Fi, CPU, 볼륨, 배터리 |
-| **AI 구독 사용량** | Claude · Codex · Cursor의 한도 사용률과 **초기화까지 남은 시간**. 클릭하면 플랜·세부 한도 팝업 |
+| **SketchyBar 상단 바** | Tokyo Night 색상의 Omarchy(Waybar) 스타일 바. 워크스페이스, 현재 앱, Wi-Fi, CPU, 볼륨, 배터리, 시계 |
+| **AI 구독 사용량** | Claude · Codex · Cursor · Gemini의 한도 사용률과 **초기화까지 남은 시간**. 클릭하면 플랜·세부 한도 팝업 |
 | **메뉴바 자동 전환** | 평소엔 SketchyBar, 마우스를 화면 맨 위에 잠시 대면 macOS 메뉴바로 전환 (작은 Swift 헬퍼) |
 | **AeroSpace 설정** | i3/Hyprland 같은 타일링. 워크스페이스 1~9 고정, 모니터 2대면 1~5 / 6~9, 3대 이상이면 1~3 / 4~6 / 7~9로 자동 분배 |
 | **JankyBorders** | 포커스된 창에 파란 테두리 |
@@ -57,7 +57,8 @@ Omarchy(DHH가 만든 Arch Linux + Hyprland 배포판)의 깔끔한 Waybar와 �
   ```bash
   xcode-select --install
   ```
-- (선택) AI 사용량을 보려면 Claude / ChatGPT(Codex) / Cursor 중 하나 이상의 구독
+- (선택) AI 사용량을 보려면 Claude / ChatGPT(Codex) / Cursor / Gemini(Google AI Pro·Ultra) 중 하나 이상의 구독
+  (Gemini는 [Antigravity CLI](https://antigravity.google/product/antigravity-cli) `agy`로 로그인해 두어야 합니다)
 
 아래 패키지는 설치 스크립트가 알아서 설치합니다.
 
@@ -99,8 +100,9 @@ cd ~/omarchy-mac
 
 1. **AeroSpace 권한 허용** — 처음 실행하면 *시스템 설정 → 개인정보 보호 및 보안 → 손쉬운 사용*에서
    AeroSpace를 켜 주세요. 권한이 없으면 창이 정렬되지 않습니다.
-2. **CodexBar 계정 연결** — 메뉴바의 CodexBar 아이콘 → 설정에서 Claude · Codex · Cursor를 켜고 로그인합니다.
-   연결 전에는 바에 `?`가 표시됩니다. (CodexBar는 이미 로그인된 브라우저 쿠키나 CLI 로그인 정보를 이용합니다)
+2. **CodexBar 계정 연결** — 메뉴바의 CodexBar 아이콘 → 설정에서 Claude · Codex · Cursor · Antigravity를 켜고 로그인합니다.
+   연결 전에는 바에 `?`가 표시됩니다. (CodexBar는 이미 로그인된 브라우저 쿠키나 CLI 로그인 정보를 이용합니다.
+   Gemini 구독은 `brew install --cask antigravity-cli` 후 터미널에서 `agy`를 실행해 Google 계정으로 로그인하면 됩니다)
 
 ## 사용법
 
@@ -117,10 +119,9 @@ cd ~/omarchy-mac
 
 숫자를 클릭하면 그 워크스페이스로 이동합니다. 숫자 옆 흐린 글자는 지금 앞에 있는 앱 이름입니다.
 
-**가운데 — 시계**: `9월 23일 (화)  10:12`
-(13·14인치 노트북처럼 화면이 좁으면 오른쪽 항목과 겹치지 않도록 시계가 **오른쪽 끝**으로 갑니다. `CLOCK_POSITION` 참고)
-
-**오른쪽 — 시스템 상태**: Wi-Fi(유선이면 이더넷 아이콘), CPU 사용률, 볼륨, 배터리(충전 중이면 번개)
+**오른쪽 — 시스템 상태와 시계**: Wi-Fi(유선이면 이더넷 아이콘), CPU 사용률, 볼륨, 배터리(충전 중이면 번개),
+그리고 맨 오른쪽 끝에 시계 `9월 23일 (화)  10:12`
+(AI 항목이 길어져도 글자가 겹치지 않도록 시계를 오른쪽 끝에 둡니다. Omarchy처럼 가운데에 두려면 `CLOCK_POSITION` 참고)
 
 ### AI 구독 사용량
 
@@ -138,6 +139,7 @@ Claude 17% 26m·40% 4d19h     Codex 99% 3d15h ↺1     Cursor 12%·3P 92% 10d5h
 | **Claude** | `5시간 한도%  남은시간 · 주간 한도%  남은시간` |
 | **Codex** | 같은 형식. 플랜에 5시간 한도가 없으면 주간만 표시. `↺N`은 **한도 재설정 크레딧**이 N회 남았다는 뜻 |
 | **Cursor** | `월간 전체% · 3P 서드파티 모델% 남은시간` |
+| **Gemini** | `5시간 한도%  남은시간 · 주간 한도%  남은시간  3P 서드파티(Claude/GPT) 최대%`. Antigravity(Google AI Pro·Ultra) 구독 기준 |
 
 - **남은 시간 형식**: `4d19h`(4일 19시간), `5h9m`(5시간 9분), `26m`(26분)
 - **색상**: 가장 높은 사용률 기준 — 🟢 50% 미만 · 🟡 50~79% · 🔴 80% 이상. 조회 실패는 회색 `?`
@@ -151,6 +153,11 @@ Claude Max 20x                    ChatGPT Pro Lite                  Cursor Pro+
 주간        40%  4d19h 후 초기화    재설정 크레딧 1회 남음 · 10/23 만료   Cursor 모델   6%   10d5h 후 초기화
 Fable 전용  15%  4d19h 후 초기화                                       서드파티      92%  10d5h 후 초기화
                                                                      Grok Bot     34%  5h3m 후 초기화
+Google Antigravity
+Gemini 5시간      0%  4h 후 초기화
+Gemini 주간       7%  6d10h 후 초기화
+Claude/GPT 5시간  0%  4h 후 초기화
+Claude/GPT 주간   0%  6d23h 후 초기화
 ```
 
 > 사용량 데이터는 [CodexBar](https://codexbar.app)의 CLI(`codexbar usage --json`)에서 가져옵니다.
@@ -221,18 +228,22 @@ Omarchy의 Super 키 자리에 `⌘`와 `⌥`을 나눠 썼습니다. `⌘`+화�
 
 ```bash
 SPLIT=5                           # 시작 시 초기 배치(1~5 메인, 6~9 보조). 이후엔 AeroSpace 실제 배치를 따라감
-AI_PROVIDERS="claude codex cursor" # 표시할 AI 서비스와 순서. 비우면 AI 항목을 표시하지 않음
+AI_PROVIDERS="claude codex cursor antigravity" # 표시할 AI 서비스와 순서. 비우면 AI 항목을 표시하지 않음
 AI_REFRESH=300                    # AI 사용량 갱신 주기(초)
-CLOCK_POSITION=auto               # 시계 위치: center | right | auto
+CLOCK_POSITION=right              # 시계 위치: right(오른쪽 끝, 기본) | center | auto
 CLOCK_CENTER_MIN=1800             # auto일 때 가장 좁은 화면 폭이 이 값(pt) 이상이면 가운데, 아니면 오른쪽 끝
 BG=0xf01a1b26                     # 색상 (0xAARRGGBB)
 ```
 
 바꾼 뒤 `sketchybar --reload`로 적용합니다.
 
-- **AI 서비스 줄이기** — Cursor를 안 쓴다면 `AI_PROVIDERS="claude codex"`
-- **다른 AI 서비스 추가** — CodexBar가 지원하는 이름(`gemini`, `copilot`, `windsurf` 등,
+- **AI 서비스 줄이기** — Cursor와 Gemini를 안 쓴다면 `AI_PROVIDERS="claude codex"`
+- **Gemini CLI 기준으로 보기** — Antigravity 대신 `gemini`를 넣으면 Gemini CLI 로그인(`~/.gemini/oauth_creds.json`)의
+  Pro · Flash · Flash Lite 일일 한도를 `Gemini CLI` 항목으로 표시합니다.
+- **다른 AI 서비스 추가** — CodexBar가 지원하는 이름(`copilot`, `windsurf` 등,
   `codexbar usage --help` 참고)을 넣으면 기본 형식으로 표시됩니다.
+- **시계를 가운데로** — `CLOCK_POSITION=center`(항상 가운데) 또는 `auto`(넓은 화면에서만 가운데).
+  AI 항목이 많으면 가운데 시계와 겹칠 수 있습니다.
 - **시계 형식** — `plugins/clock.sh`의 `date` 형식을 바꿉니다. 영어로 쓰려면 `LC_TIME=ko_KR.UTF-8`을 지우세요.
 - **색상 기준** — `plugins/ai_usage.sh`의 `color()` 함수에서 50/80 기준을 바꿉니다.
 
@@ -297,16 +308,18 @@ macOS 메뉴바를 가립니다. 참고로 `sketchybar --query bar`는 `window` 
 codexbar usage --provider claude
 ```
 
-로그인 안내가 나오면 CodexBar 앱 설정에서 해당 서비스를 켜고 로그인하세요. 정상으로 나오는데 바만 `?`라면
-`sketchybar --trigger ai_usage_refresh`로 즉시 갱신해 보세요.
+로그인 안내가 나오면 CodexBar 앱 설정에서 해당 서비스를 켜고 로그인하세요. Gemini는 CodexBar가 Antigravity CLI의
+로그인 정보를 쓰므로 터미널에서 `agy`를 실행해 먼저 로그인해야 합니다 (`codexbar usage --provider antigravity`로 확인).
+정상으로 나오는데 바만 `?`라면 `sketchybar --trigger ai_usage_refresh`로 즉시 갱신해 보세요.
 </details>
 
 <details>
 <summary><b>가운데 시계가 오른쪽 항목과 겹쳐요</b></summary>
 
-기본값(`CLOCK_POSITION=auto`)은 가장 좁은 화면 폭이 1800pt보다 작으면 시계를 오른쪽 끝에 둡니다.
-그래도 겹치면 `sketchybarrc`에서 `CLOCK_POSITION=right`로 고정하거나 `AI_PROVIDERS`를 줄이고
-`sketchybar --reload`를 실행하세요. 모니터를 연결·해제한 뒤에도 `--reload`로 위치를 다시 정합니다.
+기본값(`CLOCK_POSITION=right`)은 시계를 오른쪽 끝에 두므로 겹치지 않습니다. `center`나 `auto`로 바꿨다면
+`AI_PROVIDERS`를 줄이거나 `CLOCK_POSITION=right`로 되돌리고 `sketchybar --reload`를 실행하세요.
+`auto`는 가장 좁은 화면 폭이 1800pt보다 작을 때만 오른쪽 끝에 두며, 모니터를 연결·해제한 뒤에는
+`--reload`로 위치를 다시 정합니다.
 </details>
 
 <details>
